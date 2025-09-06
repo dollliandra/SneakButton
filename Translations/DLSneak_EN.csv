@@ -2,3 +2,10 @@ KDModButtonDLSneak,"Sneak Button"
 
 KDModButtonDLSneak_Spacer,""
 KDModButtonDLSneak_Placeholder,"Placeholder! Does nothing. Yet."
+
+
+KDSneakFail_ForcedToGround,"You are unable to crouch!"
+
+
+KinkyDungeonSpellSneaky,Sneaky
+KinkyDungeonSpellDescriptionSneaky,"You can use Crouch to hide from enemies, making you harder to see.|Instantly rise to your feet after a successful sneak attack."

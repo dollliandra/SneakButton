@@ -65,6 +65,15 @@ function DLSneak_Config(){
 
 // Make the Crouch button pass the turn.
 KDInputTypes["crouch"] = (data) => {
+    // If the character cannot stand, don't actually toggle.
+    if(KDForcedToGround()){
+        // Display message to inform the player
+        KinkyDungeonSendTextMessage(8, TextGet("KDSneakFail_ForcedToGround"), "#ff5555", 1, true);
+
+        // TODO - More evocative messages if petsuited
+        return "";
+    }
+
     KDGameData.Crouch = !KDGameData.Crouch;
     KinkyDungeonAdvanceTime(1);             // Change this value to 1 to pass turn
     return "";
@@ -78,6 +87,7 @@ let DLSneak_Sneaky = {name: "Sneaky", tags: ["buff", "utility"], school: "Any", 
         {type: "Buff", trigger: "tick", power: 0.5, buffType: "Sneak", mult: 1, tags: ["SlowDetection", "move", "cast"],
             prereq: "DLSneaky_Sneaking",
         },
+        {type: "DLSneak_Sneaky", trigger: "afterPlayerAttack",},
     ]
 }
 
@@ -91,3 +101,26 @@ if(testIndex){      // Sanity check for if "Sneaky" is ever removed from the gam
 KDPrereqs["DLSneaky_Sneaking"] = (enemy, _e, _data) => {
     return KDGameData.Crouch;
 }
+
+
+
+
+
+//#region Event Code
+///////////////////////
+// Add necessary mappings just in case that they do not exist
+if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {};}
+
+// Event that uncrouches the player after an attack.
+KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, data) => {
+    // If Crouched AND the enemy was unaware of you.
+    if(KDGameData.Crouch && !data.enemy.aware){
+        // If we only have one turn to stand. (Excess bondage will prevent it.)
+        if(KDGameData.KneelTurns == 1){
+            KDGameData.Crouch = false;          // Toggle off Crouch
+            KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
+            KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
+            KinkyDungeonCalculateSlowLevel();   // Recalculate the slow level.
+        }
+    }
+});
