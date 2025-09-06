@@ -59,5 +59,28 @@ function DLSneak_Config(){
 
 
 
-// Mod Code HERE
+// #region Sneak Code
 ////////////////////////////////////////////////////
+
+
+// Make the Crouch button pass the turn.
+KDInputTypes["crouch"] = (data) => {
+    KDGameData.Crouch = !KDGameData.Crouch;
+    KinkyDungeonAdvanceTime(1);             // Change this value to 1 to pass turn
+    return "";
+}
+
+
+// Code to overwrite "Sneaky" upgrade with
+/////////////////////////////////////////////////
+let DLSneak_Sneaky = {name: "Sneaky", tags: ["buff", "utility"], school: "Any", spellPointCost: 1, manacost: 0, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert", events: [
+    {type: "Buff", trigger: "tick", power: 0.5, buffType: "Sneak", mult: 1, tags: ["SlowDetection", "move", "cast"],
+        prereq: "Waiting",
+    },
+]}
+
+// Find the index of "Sneaky" and overwrite its contents.
+let testIndex = KinkyDungeonSpellList["Any"].findIndex((i) =>  {return i.name == "Sneaky"})
+if(testIndex){      // Sanity check for if "Sneaky" is ever removed from the game.
+    KinkyDungeonSpellList["Any"][testIndex] = DLSneak_Sneaky;
+}
