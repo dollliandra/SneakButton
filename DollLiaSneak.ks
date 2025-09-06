@@ -63,7 +63,8 @@ function DLSneak_Config(){
 ////////////////////////////////////////////////////
 
 
-// Make the Crouch button pass the turn.
+// Change the mechanics of the Crouch button.
+//////////////////////////////////////////////
 KDInputTypes["crouch"] = (data) => {
     // If the character cannot stand, don't actually toggle.
     if(KDForcedToGround()){
@@ -78,6 +79,17 @@ KDInputTypes["crouch"] = (data) => {
     KinkyDungeonAdvanceTime(1);             // Change this value to 1 to pass turn
     return "";
 }
+
+
+// Code to disable crouch if you are put into a petsuit, etc.
+// TODO - Do a better solution than this, like when you are stuffed in a suit,etc.
+// > For some reason, petsuits won't do this with "postApply" event, but hogties to.
+KDAddEvent(KDEventMapGeneric, "tick", "DLSneak_UntoggleCrouch", (e, data) => {
+    // Toggle off crouch if the player cannot stand.
+    if(KDGameData.Crouch && KDForcedToGround()){
+        KDGameData.Crouch = false;
+    }
+});
 
 
 // Code to overwrite "Sneaky" upgrade with
@@ -114,9 +126,11 @@ if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {}
 // Event that uncrouches the player after an attack.
 KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, data) => {
     // If Crouched AND the enemy was unaware of you.
-    if(KDGameData.Crouch && !data.enemy.aware){
-        // If we only have one turn to stand. (Excess bondage will prevent it.)
-        if(KDGameData.KneelTurns == 1){
+    if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
+        // If we can stand within two turns, we instantly stand up.
+        // > If we have a minKneel, we cannot stand up.
+        let KneelStats = KDGetKneelStats(1, false);
+        if(KneelStats.kneelRate < 0.5 || KneelStats.minKneel > 0){
             KDGameData.Crouch = false;          // Toggle off Crouch
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
