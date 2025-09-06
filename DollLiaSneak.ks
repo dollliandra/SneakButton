@@ -83,7 +83,7 @@ KDInputTypes["crouch"] = (data) => {
 
 // Code to disable crouch if you are put into a petsuit, etc.
 // TODO - Do a better solution than this, like when you are stuffed in a suit,etc.
-// > For some reason, petsuits won't do this with "postApply" event, but hogties to.
+// > For some reason, petsuits won't do this with "postApply" event, but hogties do.
 KDAddEvent(KDEventMapGeneric, "tick", "DLSneak_UntoggleCrouch", (e, data) => {
     // Toggle off crouch if the player cannot stand.
     if(KDGameData.Crouch && KDForcedToGround()){
@@ -125,12 +125,13 @@ if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {}
 
 // Event that uncrouches the player after an attack.
 KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, data) => {
+    console.log("AM HERE");
     // If Crouched AND the enemy was unaware of you.
     if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
         // If we can stand within two turns, we instantly stand up.
         // > If we have a minKneel, we cannot stand up.
         let KneelStats = KDGetKneelStats(1, false);
-        if(KneelStats.kneelRate < 0.5 || KneelStats.minKneel > 0){
+        if(KneelStats.kneelRate > 0.5){
             KDGameData.Crouch = false;          // Toggle off Crouch
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
@@ -158,7 +159,7 @@ KDAddEvent(KDEventMapSpell, "canSprint", "DLSneak_CrouchSprint", (_e, _spell, da
     }
 });
 
-// Event that allows sprinting while crouched.
+// Event to make sprinting cost more while crouched.
 KDAddEvent(KDEventMapSpell, "calcSprint", "DLSneak_CrouchSprint", (_e, _spell, data) => {
     if (KDGameData.Crouch && KDHasSpell("DLSneak_CrouchSprint")) {
         data.boost -= 3;
