@@ -129,9 +129,8 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
     // If Crouched AND the enemy was unaware of you.
     if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
         // If we can stand within two turns, we instantly stand up.
-        // > If we have a minKneel, we cannot stand up.
         let KneelStats = KDGetKneelStats(1, false);
-        if(KneelStats.kneelRate > 0.5){
+        if(KneelStats.kneelRate >= 0.5){
             KDGameData.Crouch = false;          // Toggle off Crouch
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
