@@ -73,14 +73,21 @@ KDInputTypes["crouch"] = (data) => {
 
 // Code to overwrite "Sneaky" upgrade with
 /////////////////////////////////////////////////
-let DLSneak_Sneaky = {name: "Sneaky", tags: ["buff", "utility"], school: "Any", spellPointCost: 1, manacost: 0, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert", events: [
-    {type: "Buff", trigger: "tick", power: 0.5, buffType: "Sneak", mult: 1, tags: ["SlowDetection", "move", "cast"],
-        prereq: "Waiting",
-    },
-]}
+let DLSneak_Sneaky = {name: "Sneaky", tags: ["buff", "utility"], school: "Any", spellPointCost: 1, manacost: 0, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert",
+    events: [
+        {type: "Buff", trigger: "tick", power: 0.5, buffType: "Sneak", mult: 1, tags: ["SlowDetection", "move", "cast"],
+            prereq: "DLSneaky_Sneaking",
+        },
+    ]
+}
 
 // Find the index of "Sneaky" and overwrite its contents.
 let testIndex = KinkyDungeonSpellList["Any"].findIndex((i) =>  {return i.name == "Sneaky"})
 if(testIndex){      // Sanity check for if "Sneaky" is ever removed from the game.
     KinkyDungeonSpellList["Any"][testIndex] = DLSneak_Sneaky;
+}
+
+// Very basic implementation - Give the sneak boost when you are Crouching.
+KDPrereqs["DLSneaky_Sneaking"] = (enemy, _e, _data) => {
+    return KDGameData.Crouch;
 }
