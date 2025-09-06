@@ -9,3 +9,6 @@ KDSneakFail_ForcedToGround,"You are unable to crouch!"
 
 KinkyDungeonSpellSneaky,Sneaky
 KinkyDungeonSpellDescriptionSneaky,"You can use Crouch to hide from enemies, making you harder to see.|Instantly rise to your feet after a successful sneak attack."
+
+KinkyDungeonSpellDLSneak_CrouchSprint,"Stealth Roll"
+KinkyDungeonSpellDescriptionDLSneak_CrouchSprint,"You can sprint while Crouching, but it costs 30 more SP to sprint this way."

@@ -138,3 +138,32 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
         }
     }
 });
+
+
+
+//#region Crouch Sprint
+////////////////////////////////
+let DLSneak_CrouchSprint = {name: "DLSneak_CrouchSprint", tags: ["buff", "utility"], school: "Any", spellPointCost: 1, prerequisite: "Sneaky", manacost: 0, components: [], level:1, passive: true, type:"", onhit:"", time: 0, delay: 0, range: 0, lifetime: 0, power: 0, damage: "inert",
+    events: [
+        {type: "DLSneak_CrouchSprint", trigger: "canSprint",},
+        {type: "DLSneak_CrouchSprint", trigger: "calcSprint",},
+    ]
+}
+
+// Event that allows sprinting while crouched.
+KDAddEvent(KDEventMapSpell, "canSprint", "DLSneak_CrouchSprint", (_e, _spell, data) => {
+    // TODO - Remove this KDForcedToGround() call once I fix the Crouch petsuit toggle bug.
+    if (KDGameData.Crouch && KDHasSpell("DLSneak_CrouchSprint") && !KDForcedToGround()) {
+        data.mustStand = false;         // Enable sprinting without standing.
+    }
+});
+
+// Event that allows sprinting while crouched.
+KDAddEvent(KDEventMapSpell, "calcSprint", "DLSneak_CrouchSprint", (_e, _spell, data) => {
+    if (KDGameData.Crouch && KDHasSpell("DLSneak_CrouchSprint")) {
+        data.boost -= 3;
+    }
+});
+
+KinkyDungeonSpellList["Special"].push(DLSneak_CrouchSprint);
+KinkyDungeonLearnableSpells[3][1].splice((KinkyDungeonLearnableSpells[3][1].indexOf("Sneaky")+1),0,"DLSneak_CrouchSprint");
