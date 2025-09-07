@@ -74,10 +74,10 @@ KDInputTypes["crouch"] = (data) => {
         // TODO - More evocative messages if petsuited
         return "";
     }
-    if(!KDGameData.Crouch){
-        // TODO - More fun sound here.
-        KinkyDungeonPlaySound(KinkyDungeonRootDirectory + "Audio/Footstep.ogg", undefined, 0.9);
-    }
+    // if(!KDGameData.Crouch){
+    //     // TODO - More fun sound here.
+    //     KinkyDungeonPlaySound(KinkyDungeonRootDirectory + "Audio/Footstep.ogg", undefined, 0.9);
+    // }
 
     KDGameData.Crouch = !KDGameData.Crouch;
     if(KDModSettings["DLSneak"]["DLSneak_CrouchTakesTurn"]){
