@@ -1,7 +1,8 @@
 KDModButtonDLSneak,"Sneak Button"
 
 KDModButtonDLSneak_Spacer,""
-KDModButtonDLSneak_Placeholder,"Placeholder! Does nothing. Yet."
+KDModButtonDLSneak_CrouchTakesTurn,"Toggling Crouch takes 1 turn."
+KDModButtonDLSneak_CrouchTakesTurnDesc,"(Default: ON)"
 
 
 KDSneakFail_ForcedToGround,"You are unable to crouch!"

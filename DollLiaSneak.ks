@@ -16,9 +16,9 @@ if (KDEventMapGeneric['afterModSettingsLoad'] != undefined) {
         if (KDModConfigs != undefined) {
             KDModConfigs["DLSneak"] = [
 
-                {refvar: "DLSneak_Spacer", type: "text"},
-                {refvar: "DLSneak_Placeholder",    type: "boolean", default: true, block: undefined},
-
+                //{refvar: "DLSneak_Spacer", type: "text"},
+                {refvar: "DLSneak_CrouchTakesTurn",    type: "boolean", default: true, block: undefined},
+                {refvar: "DLSneak_CrouchTakesTurnDesc", type: "text"},
             ]
         }
         let settingsobject = (KDModSettings.hasOwnProperty("DLSneak") == false) ? {} : Object.assign({}, KDModSettings["DLSneak"]);
@@ -76,7 +76,11 @@ KDInputTypes["crouch"] = (data) => {
     }
 
     KDGameData.Crouch = !KDGameData.Crouch;
-    KinkyDungeonAdvanceTime(1);             // Change this value to 1 to pass turn
+    if(KDModSettings["DLSneak"]["DLSneak_CrouchTakesTurn"]){
+        KinkyDungeonAdvanceTime(1);             // Change this value to 1 to pass turn
+    }else{
+        KinkyDungeonAdvanceTime(0);             // Default behavior
+    }
     return "";
 }
 
@@ -125,7 +129,6 @@ if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {}
 
 // Event that uncrouches the player after an attack.
 KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, data) => {
-    console.log("AM HERE");
     // If Crouched AND the enemy was unaware of you.
     if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
         // If we can stand within two turns, we instantly stand up.
