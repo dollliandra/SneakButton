@@ -3,16 +3,22 @@ This is a mod for the game [Kinky Dungeon](https://ada18980.itch.io/kinky-dungeo
 
 This is (hopefully) a simple mod to repurpose the Crouch button as a proper Sneak toggle.
 
+To start sneaking, you can unlock the Sneaky upgrade, or you can start as the Rogue class, which gets Sneaky for free.  Then, either click the Crouch button on the bottom right corner of the UI, or use the Crouch hotkey to begin sneaking around.
+
 [Download the Mod Here](https://github.com/dollliandra/SneakButton/releases)
 
 
 ## Mod Features
 
-This mod reworks the spell Sneaky, making it upgrade the Crouch button.  While Crouched, you are harder to detect, but move slower.  Getting up from crouch takes time, but if you land a sneak attack on an unaware enemy, you instantly get back on your feet.
+### Sneaky Rework
+This mod reworks the spell Sneaky, making it upgrade the Crouch button in the following ways:
+* While Crouched, you are harder to detect, but move slower.
+* Getting up from crouch takes time, but if you land a sneak attack on an unaware enemy, you instantly get back on your feet.
 
+Sneaking around with Crouch is risky, as if you get caught while down on the ground, you're at a massive disadvantage in combat until you get back to your feet.
+
+### Stealth Roll
 This mod also includes an upgrade to Sneaky, called Stealth Roll.  This enables you to sprint while crouched, but it costs 30 more SP to do so.
-
-To start sneaking, you can unlock the Sneaky upgrade, or you can start as the Rogue class, which gets Sneaky for free.  Then, either click the Crouch button on the bottom right corner of the UI, or use the Crouch hotkey to begin sneaking around.
 
 ## Installation/Uninstallation
 
