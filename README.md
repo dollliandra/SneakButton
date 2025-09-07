@@ -19,6 +19,8 @@ Sneaking around with Crouch is risky, as if you get caught while down on the gro
 
 ### Stealth Roll
 This mod also includes an upgrade to Sneaky, called Stealth Roll.  This enables you to sprint while crouched, but it costs 30 more SP to do so.
+* It's a great panic option if you get caught and need to roll away from an attack.
+* It can also be used to move quickly around, but it costs a LOT of SP to use.
 
 ## Installation/Uninstallation
 
