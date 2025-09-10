@@ -177,10 +177,7 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
 
     // If Crouched AND the enemy was unaware of you.
     if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
-        // If we can stand within two turns, we instantly stand up.
-        //let KneelStats = KDGetKneelStats(1, false);
-        //if(KneelStats.kneelRate >= 0.5){
-        if(KinkyDungeonSlowLevel < 4){
+        if(KinkyDungeonSlowLevel <= 3){
             KDGameData.Crouch = false;          // Toggle off Crouch
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
@@ -194,7 +191,18 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
 // Event that prevents the player from triggering certain kinds of traps by sneaking
 KDAddEvent(KDEventMapSpell, "beforeTrap", "DLSneak_Sneaky", (e, spell, data) => {
     if (KDGameData.Crouch && data.flags.AllowTraps && !data.IsSpell) {
-        if (KDRandom() < e.chance) {
+
+        // Make it RNG if your legs are bound too much.
+        let chance = 1;
+        // Automatically fail if your legs are encased.
+        // NOTE - Slow Level is a decimal value.  > 3 is not equivalent to >= 4.
+        if(KinkyDungeonSlowLevel > 3){
+            KinkyDungeonSendTextMessage(4, TextGet("KinkyDungeonDLSneak_SneakyIgnoreTrapAutoFail"), KDBaseLightGreen, 2);
+            return;
+        }
+        else if(KinkyDungeonSlowLevel == 3){chance = 0.75;}
+
+        if (KDRandom() < chance) {
             data.flags.AllowTraps = false;
             KinkyDungeonSendTextMessage(7, TextGet("KinkyDungeonDLSneak_SneakyIgnoreTrap"), KDBaseLightGreen, 2);
         } else {
@@ -217,7 +225,7 @@ let DLSneak_CrouchSprint = {name: "DLSneak_CrouchSprint", tags: ["buff", "utilit
 // Event that allows sprinting while crouched.
 KDAddEvent(KDEventMapSpell, "canSprint", "DLSneak_CrouchSprint", (_e, _spell, data) => {
     // TODO - Remove this KDForcedToGround() call once I fix the Crouch petsuit toggle bug.
-    if (KDGameData.Crouch && KDHasSpell("DLSneak_CrouchSprint") && !KDForcedToGround()) {
+    if (KDGameData.Crouch && KinkyDungeonSlowLevel <= 3 && KDHasSpell("DLSneak_CrouchSprint") && !KDForcedToGround()) {
         data.mustStand = false;         // Enable sprinting without standing.
     }
 });

@@ -11,7 +11,8 @@ KDSneakFail_Petsuits,"You can't crouch in a petsuit!"
 KDSneakFail_ForcedToGround,"You are unable to stand!"
 
 KinkyDungeonDLSneak_SneakyIgnoreTrap,"You sneak over the trap!"
-KinkyDungeonDLSneak_SneakyIgnoreTrapFail,"You snag a tripwire while sneaking!"
+KinkyDungeonDLSneak_SneakyIgnoreTrapFail,"Your clumsy feet accidentally triggered the trap!"
+KinkyDungeonDLSneak_SneakyIgnoreTrapAutoFail,"You're too bound to sneak over the trap!"
 
 KinkyDungeonSpellSneaky,Sneaky
 KinkyDungeonSpellDescriptionSneaky,"You can use Crouch to sneak, making you harder to see. While sneaking, you do not trigger pressure plates.| |Instantly rise to your feet after a melee sneak attack, if your slow level is less than 4."
