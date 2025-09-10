@@ -1,8 +1,8 @@
 {
     "modname": "DollLiaSneakButton",
-    "moddesc": "Sneak Toggle",
+    "moddesc": "Sneak Button",
     "author": "DollLia",
-    "modbuild": 0.1,
+    "modbuild": 0.2,
     "gamemajor": 5,
     "gameminor": 4,
     "gamepatch_min": -1,

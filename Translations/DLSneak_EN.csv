@@ -15,7 +15,7 @@ KinkyDungeonDLSneak_SneakyIgnoreTrapFail,"Your clumsy feet accidentally triggere
 KinkyDungeonDLSneak_SneakyIgnoreTrapAutoFail,"You're too bound to sneak over the trap!"
 
 KinkyDungeonSpellSneaky,Sneaky
-KinkyDungeonSpellDescriptionSneaky,"You can use Crouch to sneak, making you harder to see. While sneaking, you do not trigger pressure plates.| |Instantly rise to your feet after a melee sneak attack, if your slow level is less than 4."
+KinkyDungeonSpellDescriptionSneaky,"You can use Crouch to sneak, making you harder to see. While sneaking, you do not trigger pressure plates.|---|Instantly rise to your feet after a melee sneak attack, if your slow level is less than 4."
 
 KinkyDungeonSpellDLSneak_CrouchSprint,"Stealth Roll"
 KinkyDungeonSpellDescriptionDLSneak_CrouchSprint,"You can sprint while sneaking, but it costs 30 more SP to sprint this way."
