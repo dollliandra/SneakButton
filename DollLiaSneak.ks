@@ -106,8 +106,10 @@ KDInputTypes["crouch"] = (data) => {
 // TODO - Do a better solution than this, like when you are stuffed in a suit,etc.
 // > For some reason, petsuits won't do this with "postApply" event, but hogties do.
 KDAddEvent(KDEventMapGeneric, "tick", "DLSneak_UntoggleCrouch", (e, data) => {
-    // Toggle off crouch if the player cannot stand.
-    if(KDGameData.Crouch && KDForcedToGround()){
+    // Toggle off crouch if the player cannot stand or cannot kneel.
+    if(KDGameData.Crouch && 
+        (KDForcedToGround() || KinkyDungeonPlayerTags.get("ForceStand") || KinkyDungeonPlayerTags.get("BlockKneel"))
+    ){
         KDGameData.Crouch = false;
     }
 });
