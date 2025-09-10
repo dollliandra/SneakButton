@@ -3,6 +3,8 @@ KDModButtonDLSneak,"Sneak Button"
 KDModButtonDLSneak_Spacer,""
 KDModButtonDLSneak_CrouchTakesTurn,"Toggling Crouch takes 1 turn."
 KDModButtonDLSneak_CrouchTakesTurnDesc,"(Default: ON)"
+KDModButtonDLSneak_SneakRoll,"Enable Sneak Roll upgrade."
+KDModButtonDLSneak_SneakRollDesc,"(Default: ON)"
 
 KDSneakFail_ForcedStand,"You can't crouch down like this..."
 KDSneakFail_Petsuits,"You can't crouch in a petsuit!"

@@ -19,6 +19,8 @@ if (KDEventMapGeneric['afterModSettingsLoad'] != undefined) {
                 //{refvar: "DLSneak_Spacer", type: "text"},
                 {refvar: "DLSneak_CrouchTakesTurn",    type: "boolean", default: true, block: undefined},
                 {refvar: "DLSneak_CrouchTakesTurnDesc", type: "text"},
+                {refvar: "DLSneak_SneakRoll",    type: "boolean", default: true, block: undefined},
+                {refvar: "DLSneak_SneakRollDesc", type: "text"},
             ]
         }
         let settingsobject = (KDModSettings.hasOwnProperty("DLSneak") == false) ? {} : Object.assign({}, KDModSettings["DLSneak"]);
@@ -44,7 +46,8 @@ if (KDEventMapGeneric['afterModConfig'] != undefined) {
 ////////////////////////////////////////////////////////////
 function DLSneak_Config(){
 
-    // Helper Functions (if I ever make any)
+    // Helper Functions
+    DLSE_SneakSpells()
 
     KDLoadPerks();              // Refresh the perks list so that things show up.
     KDRefreshSpellCache = true;
@@ -53,9 +56,13 @@ function DLSneak_Config(){
 
 
 
-
-
-
+function DLSE_SneakSpells(){
+    // 4 lines per spell.
+    if(KDModSettings["DLSneak"]["DLSneak_SneakRoll"] && !KinkyDungeonLearnableSpells[3][1].includes("DLSneak_CrouchSprint")){
+        KinkyDungeonLearnableSpells[3][1].splice((KinkyDungeonLearnableSpells[3][1].indexOf("Sneaky")+1),0,"DLSneak_CrouchSprint");}  // Add the spell if not already added
+    else if(!KDModSettings["DLSneak"]["DLSneak_SneakRoll"] && KinkyDungeonLearnableSpells[3][1].includes("DLSneak_CrouchSprint")){
+        KinkyDungeonLearnableSpells[3][1].splice((KinkyDungeonLearnableSpells[3][1].indexOf("DLSneak_CrouchSprint")),1);}             // Remove the spell if already added
+}
 
 
 
@@ -183,4 +190,3 @@ KDAddEvent(KDEventMapSpell, "calcSprint", "DLSneak_CrouchSprint", (_e, _spell, d
 });
 
 KinkyDungeonSpellList["Special"].push(DLSneak_CrouchSprint);
-KinkyDungeonLearnableSpells[3][1].splice((KinkyDungeonLearnableSpells[3][1].indexOf("Sneaky")+1),0,"DLSneak_CrouchSprint");
