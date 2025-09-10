@@ -120,7 +120,9 @@ let DLSneak_Sneaky = {name: "Sneaky", tags: ["buff", "utility"], school: "Any", 
         {type: "Buff", trigger: "tick", power: 0.5, buffType: "Sneak", mult: 1, tags: ["SlowDetection", "move", "cast"],
             prereq: "DLSneaky_Sneaking",
         },
+        {type: "DLSneak_Sneaky", trigger: "beforeCast",},
         {type: "DLSneak_Sneaky", trigger: "afterPlayerAttack",},
+        {type: "DLSneak_Sneaky", trigger: "beforeTrap", chance: 1},
     ]
 }
 
@@ -146,19 +148,55 @@ KDPrereqs["DLSneaky_Sneaking"] = (enemy, _e, _data) => {
 // Add necessary mappings just in case that they do not exist
 if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {};}
 
+// Event that listens to the player casting a spell.
+// > NOTE: Weapon Specials are Spells. (Bow Arrow)
+// > NOTE: Telekinesis is a Spell that launches an Attack.
+///////////////////////////////////////////////
+KDAddEvent(KDEventMapSpell, "beforeCast", "DLSneak_Sneaky", (e, spell, data) => {
+
+    // TODO - Exemptions
+
+    KinkyDungeonSetFlag("DLSneak_CastSpell", 1);
+});
+
 // Event that uncrouches the player after an attack.
 KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, data) => {
+
+    // Don't stand up if we used a Spell or Special.
+    if(KinkyDungeonFlags.get("DLSneak_CastSpell")){
+        return;
+    }
+
+    // Don't stand up if we attacked outside of melee.
+    // TODO - Remove this check?
+    if(KDistChebyshev(data.enemy.x - KinkyDungeonPlayerEntity.x, data.enemy.y - KinkyDungeonPlayerEntity.y) > 2){
+        return;
+    }
+
     // If Crouched AND the enemy was unaware of you.
     if(!KDForcedToGround() && KDGameData.Crouch && !data.enemy.aware){
         // If we can stand within two turns, we instantly stand up.
-        let KneelStats = KDGetKneelStats(1, false);
-        if(KneelStats.kneelRate >= 0.5){
+        //let KneelStats = KDGetKneelStats(1, false);
+        //if(KneelStats.kneelRate >= 0.5){
+        if(KinkyDungeonSlowLevel < 4){
             KDGameData.Crouch = false;          // Toggle off Crouch
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
             KinkyDungeonCalculateSlowLevel();   // Recalculate the slow level.
 
             KDGameData.MovePoints = 0;          // Clear lingering stun from movement, if any.
+        }
+    }
+});
+
+// Event that prevents the player from triggering certain kinds of traps by sneaking
+KDAddEvent(KDEventMapSpell, "beforeTrap", "DLSneak_Sneaky", (e, spell, data) => {
+    if (KDGameData.Crouch && data.flags.AllowTraps && !data.IsSpell) {
+        if (KDRandom() < e.chance) {
+            data.flags.AllowTraps = false;
+            KinkyDungeonSendTextMessage(7, TextGet("KinkyDungeonDLSneak_SneakyIgnoreTrap"), KDBaseLightGreen, 2);
+        } else {
+            KinkyDungeonSendTextMessage(4, TextGet("KinkyDungeonDLSneak_SneakyIgnoreTrapFail"), KDBaseLightGreen, 2);
         }
     }
 });
