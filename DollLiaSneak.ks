@@ -59,19 +59,25 @@ function DLSneak_Config(){
 
 
 
-// #region Sneak Code
+// #region Sneak Button Code
 ////////////////////////////////////////////////////
 
 
 // Change the mechanics of the Crouch button.
 //////////////////////////////////////////////
 KDInputTypes["crouch"] = (data) => {
+    // If the player cannot kneel, don't allow the toggle. Send a proper message.
+    if(KinkyDungeonPlayerTags.get("ForceStand") || KinkyDungeonPlayerTags.get("BlockKneel")){
+        KinkyDungeonSendTextMessage(8, TextGet("KDSneakFail_ForcedStand"), "#ff5555", 1, true);
+        return "";
+    }
     // If the character cannot stand, don't actually toggle.
     if(KDForcedToGround()){
-        // Display message to inform the player
-        KinkyDungeonSendTextMessage(8, TextGet("KDSneakFail_ForcedToGround"), "#ff5555", 1, true);
-
-        // TODO - More evocative messages if petsuited
+        if(KinkyDungeonPlayerTags.get("Petsuits")){
+            KinkyDungeonSendTextMessage(8, TextGet("KDSneakFail_Petsuits"), "#ff5555", 1, true);
+        }else{
+            KinkyDungeonSendTextMessage(8, TextGet("KDSneakFail_ForcedToGround"), "#ff5555", 1, true);
+        }
         return "";
     }
     // if(!KDGameData.Crouch){
@@ -127,7 +133,9 @@ KDPrereqs["DLSneaky_Sneaking"] = (enemy, _e, _data) => {
 
 
 //#region Event Code
-///////////////////////
+////////////////////////////////
+// Sneaky Rework - Event Code //
+////////////////////////////////
 // Add necessary mappings just in case that they do not exist
 if(!KDEventMapSpell.afterPlayerAttack){KDEventMapSpell["afterPlayerAttack"] = {};}
 
@@ -142,6 +150,8 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
             KDGameData.KneelTurns = 0;          // Blank KneelTurns so the player can stand.
             KinkyDungeonDressPlayer();          // "Dress" the player to make the player visibly stand.
             KinkyDungeonCalculateSlowLevel();   // Recalculate the slow level.
+
+            KDGameData.MovePoints = 0;          // Clear lingering stun from movement, if any.
         }
     }
 });
