@@ -87,10 +87,10 @@ KDInputTypes["crouch"] = (data) => {
         }
         return "";
     }
-    // if(!KDGameData.Crouch){
-    //     // TODO - More fun sound here.
-    //     KinkyDungeonPlaySound(KinkyDungeonRootDirectory + "Audio/Footstep.ogg", undefined, 0.9);
-    // }
+    if(!KDGameData.Crouch){
+        // TODO - More fun sound here.
+        KinkyDungeonPlaySound(KinkyDungeonRootDirectory + "Audio/SneakToggleON.ogg", undefined, 0.9);
+    }
 
     KDGameData.Crouch = !KDGameData.Crouch;
     if(KDModSettings["DLSneak"]["DLSneak_CrouchTakesTurn"]){
@@ -136,7 +136,7 @@ if(testIndex){      // Sanity check for if "Sneaky" is ever removed from the gam
 
 // Very basic implementation - Give the sneak boost when you are Crouching.
 KDPrereqs["DLSneaky_Sneaking"] = (enemy, _e, _data) => {
-    return KDGameData.Crouch;
+    return (KDGameData.Crouch && KDGameData.KinkyDungeonLeashedPlayer == 0);
 }
 
 
@@ -188,6 +188,9 @@ KDAddEvent(KDEventMapSpell, "afterPlayerAttack", "DLSneak_Sneaky", (e, _weapon, 
     }
 });
 
+
+
+
 // Event that prevents the player from triggering certain kinds of traps by sneaking
 KDAddEvent(KDEventMapSpell, "beforeTrap", "DLSneak_Sneaky", (e, spell, data) => {
     if (KDGameData.Crouch && data.flags.AllowTraps && !data.IsSpell) {
@@ -238,3 +241,25 @@ KDAddEvent(KDEventMapSpell, "calcSprint", "DLSneak_CrouchSprint", (_e, _spell, d
 });
 
 KinkyDungeonSpellList["Special"].push(DLSneak_CrouchSprint);
+
+
+
+
+
+
+
+// GARBAGE FOR TESTING
+// KDAddEvent(KDEventMapGeneric, "afterPlayerAttack", "DLSneak_TestSmack", (e, data) => {
+
+//     console.log(data);
+
+//     // Absolutely bamboozle them.
+//     if(data.enemy.aware){
+//         data.enemy.vp = -2;
+//         data.enemy.aware = false;
+//         data.enemy.aggro = 0;
+//         data.enemy.hostile = 0;
+//         data.enemy.playwithplayer = 0;
+//     }
+
+// });

@@ -24,3 +24,18 @@ Includes two optional settings in the MCM.
 
 2.) New Stealth Roll upgrade.  (Default: ON)
 * Adds a new upgrade that lets you sprint while crouched, but with an extra +30 SP Cost.
+
+
+
+#=================================#
+#           Attributions          #
+#=================================#
+
+Code - Doll.Lia
+
+Audio:
+====
+Torch Sound (Turned into Sneak SFX):
+* CC-BY 3.0 License
+* spookymodem
+* https://opengameart.org/content/torch-fire-spell
